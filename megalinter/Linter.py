@@ -959,8 +959,7 @@ class Linter:
                 command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
-                shell=True,
-                cwd=cwd,
+                shell=False, cwd=cwd,
                 env=subprocess_env,
                 executable=(
                     shutil.which("bash") if sys.platform == "win32" else "/bin/bash"
