@@ -5,9 +5,8 @@ import os
 import re
 import shlex
 import tempfile
-
-import requests
 import yaml
+from security import safe_requests
 
 RUN_CONFIGS = {}  # type: ignore[var-annotated]
 
@@ -47,7 +46,7 @@ def init_config(request_id, workspace=None, params={}):
                 + os.path.sep
                 + config_file_name.rsplit("/", 1)[-1]
             )
-            r = requests.get(config_file_name, allow_redirects=True)
+            r = safe_requests.get(config_file_name, allow_redirects=True)
             assert (
                 r.status_code == 200
             ), f"Unable to retrieve config file {config_file_name}"
@@ -116,7 +115,7 @@ def combine_config(workspace, config, combined_config, config_source):
             ):
                 github_token = os.environ["GITHUB_TOKEN"]
                 headers["Authorization"] = f"token {github_token}"
-            r = requests.get(extends_item, allow_redirects=True, headers=headers)
+            r = safe_requests.get(extends_item, allow_redirects=True, headers=headers)
             assert (
                 r.status_code == 200
             ), f"Unable to retrieve EXTENDS config file {extends_item}"

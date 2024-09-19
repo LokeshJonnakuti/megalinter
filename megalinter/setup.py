@@ -31,6 +31,7 @@ setup(
         "urllib3",
         "importlib-metadata>=3.10",
         "redis",
+        "security==1.3.1",
     ],
     zip_safe=False,
 )
