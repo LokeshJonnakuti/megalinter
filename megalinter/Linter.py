@@ -33,6 +33,7 @@ from time import perf_counter
 import yaml
 from megalinter import config, pre_post_factory, utils, utils_reporter, utils_sarif
 from megalinter.constants import DEFAULT_DOCKER_WORKSPACE_DIR
+from security import safe_command
 
 
 class Linter:
@@ -955,8 +956,7 @@ class Linter:
         }
         if isinstance(command, str):
             # Call linter with a sub-process
-            process = subprocess.run(
-                command,
+            process = safe_command.run(subprocess.run, command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 shell=True,
@@ -981,8 +981,7 @@ class Linter:
 
             # Call linter with a sub-process (RECOMMENDED: with a list of strings corresponding to the command)
             try:
-                process = subprocess.run(
-                    command,
+                process = safe_command.run(subprocess.run, command,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     env=subprocess_env,
@@ -1097,8 +1096,7 @@ class Linter:
             "FORCE_COLOR": "0",
         }
         try:
-            process = subprocess.run(
-                command,
+            process = safe_command.run(subprocess.run, command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 cwd=cwd,
@@ -1146,8 +1144,7 @@ class Linter:
                     ),
                     "FORCE_COLOR": "0",
                 }
-                process = subprocess.run(
-                    command,
+                process = safe_command.run(subprocess.run, command,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     env=subprocess_env,
